@@ -47,9 +47,9 @@ $ yarn package --[option]
 ```
 
 ## Libraries used
-[electron-react-boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate) 
-[fs](https://nodejs.org/api/fs.html) - file system methods in JS
-[bcrypt](https://github.com/kelektiv/node.bcrypt.js#readme) - password encryption/decryption (security)
+[electron-react-boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate)   
+[fs](https://nodejs.org/api/fs.html) - file system methods in JS  
+[bcrypt](https://github.com/kelektiv/node.bcrypt.js#readme) - password encryption/decryption (security)  
 ## Demo
 [YouTube](https://www.youtube.com/watch?v=E6Ww7A42jwQ&feature=youtu.be)
 ## Note
