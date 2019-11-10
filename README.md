@@ -1,5 +1,4 @@
 # Simple React Electron file manager
-<br/>
 ## Install
 
 First, clone the repo via git:
