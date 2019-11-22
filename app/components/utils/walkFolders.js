@@ -1,6 +1,5 @@
 const fs = require('fs-extra')
 const path = require('path')
-console.log(fs)
 
 /**
  * Generator function that lists all files in a folder recursively
@@ -75,22 +74,45 @@ export function getFolders (absolutePath) {
 }
 export function createFolder(path) {
     fs.mkdir(path, { recursive: true }, (err) => {
-      if (err) throw err;
+      if (err) {
+        alert(err)
+      }
     });
 }
 export function createFile(path) {
-    fs.writeFileSync(path, "")
+    try {
+      fs.writeFileSync(path, "")
+    } catch(err) {
+      alert(err);
+    }
 }
 export function paste(oldPath, newPath, move) {
-  if(move) {
-    fs.moveSync(oldPath, newPath)
-  } else {
-    fs.copySync(oldPath, newPath)
+  try {
+    if(move) {
+      fs.moveSync(oldPath, newPath, { overwrite: false })
+    } else {
+      // fs.copySync(oldPath, newPath, { overwrite: false })
+      fs.copy(oldPath, newPath, {overwrite: false}, err =>{
+        if(err) return console.error(err)
+        console.log("sucesss")
+      })
+      console.log("after copy")
+    }
+  } catch(err) {
+    alert(err);
   }
 }
 export function remove(path) {
-  fs.removeSync(path)
+  try {
+    fs.removeSync(path)
+  } catch(err) {
+    alert(err)
+  }
 }
 export function rename(oldPath, newPath) {
-  fs.renameSync(oldPath, newPath);
+  try {
+    fs.renameSync(oldPath, newPath);
+  } catch(err) {
+    alert(err)
+  }
 }

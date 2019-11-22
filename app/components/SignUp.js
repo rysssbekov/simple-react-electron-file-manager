@@ -10,7 +10,8 @@ export default class SignUp extends Component {
         const state = this.state
         const storage = window.localStorage
         if(state.first_name == "" || state.username == "" || state.password == "") {
-            alert("Some fields are empty. Please try again")            
+            alert("Some fields are empty. Please try again")          
+            event.preventDefault();   
         } else {
             storage.setItem("first_name", state.first_name)
             storage.setItem("username", state.username)

@@ -4,10 +4,11 @@ import React, { Component } from 'react';
 import List from './List.js'
 import {createFolder, createFile, paste, remove, rename} from './utils/walkFolders.js'
 import routes from '../constants/routes';
+const fs = require('fs-extra')
 class FileManager extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {path: "/", newFolderInputValue: "", newFileInputValue: "", fileToCopy: "", fileNameToCopy: "", move: false}
+    this.state = {path: "/", newFolderInputValue: "", newFileInputValue: "", fileToCopy: "", fileNameToCopy: "", move: false, loading: false}
     this._handler = this._handler.bind(this)
     this.handleCopy = this.handleCopy.bind(this)
     this.handlePaste = this.handlePaste.bind(this)
@@ -19,6 +20,13 @@ class FileManager extends React.Component {
     this.newFileHandler = this.newFileHandler.bind(this)
     this.handleNewFileInputChange = this.handleNewFileInputChange.bind(this)
   }
+  componentDidMount() {
+    console.log("componentDidMount")
+    this.interval = setInterval(() => this.forceUpdate(), 300);
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
   _handler(newPath) {    
     this.setState((state) => ({
       path: pathFunc.join(state.path, newPath)      
@@ -26,18 +34,39 @@ class FileManager extends React.Component {
   } 
   handleRename(oldName, newName) {
     rename(pathFunc.join(this.state.path, oldName), pathFunc.join(this.state.path, newName))
-    this.setState({ state: this.state});      
+    // this.setState({ state: this.state});      
   }
   handleCopy(itemName, move) {    
     this.setState((state) => ({fileToCopy: pathFunc.join(state.path, itemName), fileNameToCopy: itemName, move}))
   }
   handleRemove(itemName) {
     remove(pathFunc.join(this.state.path, itemName))
-    this.setState({ state: this.state});    
+    // this.setState({ state: this.state});    
   }
-  handlePaste() {
-    paste(this.state.fileToCopy, pathFunc.join(this.state.path, this.state.fileNameToCopy), this.state.move);        
-    this.setState({ state: this.state});    
+  handlePaste() {   
+    if(pathFunc.dirname(this.state.fileToCopy) == this.state.path) {
+      alert("Cannot paste in the same folder")
+      return;
+    }
+    this.fsPaste(this.state.fileToCopy, pathFunc.join(this.state.path, this.state.fileNameToCopy), this.state.move);        
+    // this.setState({ state: this.state});    
+  }
+  fsPaste(oldPath, newPath, move) {    
+      if(move) {
+        const this_ = this
+        this.setState({loading:true})     
+        fs.move(oldPath, newPath, {overwrite: false}, err =>{
+          if(err) return alert(err)
+          this_.setState({loading: false})
+        })
+      } else {   
+        const this_ = this
+        this.setState({loading:true})     
+        fs.copy(oldPath, newPath, {overwrite: false}, err =>{
+          if(err) return alert(err)
+          this_.setState({loading: false})
+        })               
+      }    
   }
   handleNewFolderInputChange(event) {
     this.setState({newFolderInputValue: event.target.value});
@@ -61,15 +90,14 @@ class FileManager extends React.Component {
     event.preventDefault()
   }
   render() {    
-    const path = this.state.path
-    console.log(this.state)    
+    const path = this.state.path     
     const first_name = localStorage.getItem("first_name")
     return (
       <div>
-        <h1>Hello, {first_name} </h1>
+        <h1>Hello, {first_name} </h1>        
         <p>I hope you enjoy using this basic Electron file manager</p>                
         <button onClick={this.backClicKHandler} className="action-button">Back</button>                
-        <button onClick={this.handlePaste} className="action-button">Paste</button>
+        <button onClick={this.handlePaste} className="action-button">Paste</button>        
         <form onSubmit={this.newFolderHandler}>          
           <label>
             Name:
@@ -84,6 +112,7 @@ class FileManager extends React.Component {
           </label>        
           <input type="submit" value="New File" className="action-button" />
         </form>
+        {this.state.loading ? <div><div className="loader"></div><p>Pasting...</p></div> : <br/>}
         <ul>
         <List path={path} handler={ this._handler } handleCopy={ this.handleCopy } handleRemove={ this.handleRemove } handleRename={ this.handleRename }/>
         </ul>

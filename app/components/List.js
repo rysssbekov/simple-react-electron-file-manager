@@ -9,9 +9,7 @@ class List extends React.Component {
         super(props);
     }  
     render() {                
-        const items = getFolders(this.props.path)
-        console.log("List")
-        console.log(items)
+        const items = getFolders(this.props.path)       
         const props = this.props;                
         const folderItems = items.folders.map((item) =>             
                 <Folder key={item.fileName} rootDir={item.rootDir} name={item.fileName} handleCopy={props.handleCopy} handler={props.handler} handleRemove={props.handleRemove} handleRename={props.handleRename}></Folder>            

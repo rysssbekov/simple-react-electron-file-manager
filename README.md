@@ -1,4 +1,6 @@
 # Simple React Electron file manager
+
+<br/>
 ## Install
 
 First, clone the repo via git:
@@ -47,10 +49,15 @@ $ yarn package --[option]
 ```
 
 ## Libraries used
-[electron-react-boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate)   
-[fs](https://nodejs.org/api/fs.html) - file system methods in JS  
-[bcrypt](https://github.com/kelektiv/node.bcrypt.js#readme) - password encryption/decryption (security)  
+
+[electron-react-boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate)
+[fs](https://nodejs.org/api/fs.html) - file system methods in JS
+[bcrypt](https://github.com/kelektiv/node.bcrypt.js#readme) - password encryption/decryption (security)
+
 ## Demo
+
 [YouTube](https://www.youtube.com/watch?v=E6Ww7A42jwQ&feature=youtu.be)
+
 ## Note
+
 The program was only properly tested on Linux, so a smooth work on other operating systems such as Windows and MacOS is not guaranteed
